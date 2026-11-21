@@ -70,7 +70,7 @@ The static layout and base map can be previewed, but **observation data will not
 - No authentication, administrative interface, server credentials or private PHP implementation are distributed here.
 - Frontend JavaScript is not a secure location for secrets. Never add private API keys, tokens or credentials to this repository.
 - This repository was assembled as a **separate, curated source snapshot**; it is not a copy of the production Git history.
-- Some visual assets are included solely for project identification; their publication/redistribution rights should be confirmed before making the repository public.
+- The TreeMap logo and favicon are included with project authorization for portfolio presentation.
 - A public source snapshot should not be used as a replacement for a security review of the live service.
 
 ## Credits and contributions
