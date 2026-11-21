@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contribuir • TreeMap-ITE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    .step { counter-increment: step; }
+    .step::before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.5rem; height: 1.5rem; border-radius: 9999px;
+      background: #16a34a; color: #fff; font-size: 0.75rem; font-weight: 700; margin-right: 0.5rem;
+    }
+  </style>
+</head>
+
+
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+
+  <!-- HEADER (não fixo) -->
+  <header class="relative z-10 bg-gradient-to-r from-green-700 to-emerald-600 text-white shadow-md">
+    <div class="container mx-auto px-4">
+      <div class="h-20 md:h-24 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-12 md:h-14 lg:h-16 w-auto">
+          <div class="leading-tight">
+            <p class="text-lg md:text-xl font-bold">TreeMap-ITE</p>
+            <p class="text-green-100 text-xs md:text-sm">Mapeamento de Árvores</p>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="index.html#mapa" class="hover:text-green-200 font-medium">Mapa</a>
+          <!--<a href="index.html#especies" class="hover:text-green-200 font-medium">Espécies</a>-->
+          <a href="sobre.html" class="hover:text-green-200 font-medium">Sobre</a>
+          <a href="contribuir.html" class="text-white/90 font-semibold">Contribuir</a>
+        </nav>
+
+        <button id="btn-mobile" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-white/10">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 text-sm">
+          <a href="index.html#mapa" class="px-3 py-2 rounded-lg hover:bg-white/10">Mapa</a>
+          <!--<a href="index.html#especies" class="px-3 py-2 rounded-lg hover:bg-white/10">Espécies</a>-->
+          <a href="sobre.html" class="px-3 py-2 rounded-lg hover:bg-white/10">Sobre</a>
+          <a href="contribuir.html" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20">Contribuir</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 py-10 md:py-12 flex-1">
+
+  <!-- Voltar -->
+  <a href="index.html#mapa" class="inline-flex items-center text-green-700 hover:text-green-900 mb-6">
+    <i class="fas fa-arrow-left mr-2"></i> Voltar ao mapa
+  </a>
+
+  <!-- Título -->
+<div></div>
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Como contribuir</h1>
+    <p class="mt-2 text-gray-600">
+      Você só precisa de um celular com internet. As observações são feitas no aplicativo <strong>PlantNet</strong> e,
+      ao publicar no grupo <strong>TreeMap PMB</strong>, sua árvore aparece no nosso mapa.
+    </p>
+    <div class="mt-4 flex gap-3 flex-wrap">
+  <a href="https://identify.plantnet.org/pt-br" target="_blank" rel="noopener"
+     class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+    <i class="fa-solid fa-leaf"></i> Abrir PlantNet (web)
+  </a>
+  
+<!-- Para Android -->
+<a href="https://play.google.com/store/apps/details?id=org.plantnet" target="_blank" 
+   class="md:hidden mt-4 inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition-colors w-full">
+   📱 Baixar PlantNet (Android)
+</a>
+
+<!-- Para iOS -->
+<a href="https://apps.apple.com/br/app/plantnet/id600547573" target="_blank" 
+   class="md:hidden mt-2 inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition-colors w-full">
+   🍎 Baixar PlantNet (iPhone)
+</a>
+
+
+  <!-- NOVO: abrir o grupo diretamente -->
+  <a href="https://identify.plantnet.org/pt-br/groups/67612542552" target="_blank" rel="noopener"
+     class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">
+    <i class="fa-solid fa-people-group"></i> Abrir grupo TreeMap PMB
+  </a>
+
+  <!-- NOVO: copiar link do grupo -->
+  <button id="copy-group-link"
+    class="inline-flex items-center gap-2 border border-green-600 text-green-700 hover:bg-green-50 px-4 py-2 rounded-lg">
+    <i class="fa-regular fa-copy"></i> Copiar link do grupo
+  </button>
+
+  <!-- Botão Sugestões -->
+<button id="open-sugestao" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+  💡 Enviar sugestão
+</button>
+
+<!-- Modal de Sugestão -->
+<div id="modal-sugestao" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 relative">
+    <button id="close-sugestao" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+      <i class="fas fa-times"></i>
+    </button>
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Envie sua sugestão</h2>
+    
+    <form id="form-sugestao" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nome</label>
+        <input type="text" id="nome" required class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" required class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Sua sugestão</label>
+        <textarea id="mensagem" rows="4" required class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500"></textarea>
+      </div>
+
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors w-full">
+        Enviar
+      </button>
+    </form>
+
+    <p id="resposta" class="mt-3 text-center text-sm text-green-600 hidden">✅ Sugestão enviada com sucesso!</p>
+  </div>
+</div>
+
+
+  <!-- Resumo rápido -->
+  <section class="mt-8 grid md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow p-5">
+      <h2 class="text-xl font-semibold mb-3">O que você precisa</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-600 mt-1"></i> Celular com câmera e internet.</li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-600 mt-1"></i> App ou site do <strong>PlantNet</strong>.</li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-600 mt-1"></i> Estar próximo da árvore para marcar a localização.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5">
+      <h2 class="text-xl font-semibold mb-3">Passo a passo (resumo)</h2>
+      <ol class="list-decimal list-inside space-y-2 text-gray-700">
+        <li>Abrir o PlantNet e entrar em <strong>Grupos</strong>.</li>
+        <li>Buscar e entrar no grupo <strong>TreeMap PMB</strong>.</li>
+        <li>Toque em <strong>Adicionar observação</strong>.</li>
+        <li>Fotografe: <em>folha, tronco e a árvore inteira</em>.</li>
+        <li>Confirme a espécie (verifique as sugestões; refaça se precisar).</li>
+        <li>Chegue o mais <strong>próximo do tronco</strong> para registrar a localização.</li>
+        <li>Publique no grupo. Sua árvore deve aparecer no mapa em breve.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Passo a passo detalhado -->
+  <section class="mt-8 bg-white rounded-lg shadow p-5">
+    <h2 class="text-xl font-semibold mb-4">Passo a passo detalhado</h2>
+
+    <div class="space-y-6">
+      <div class="p-4 border rounded-lg">
+  <div class="font-semibold text-gray-900 mb-1">1) Entre no grupo certo</div>
+  <p class="text-gray-700">
+    No PlantNet, abra <strong>Grupos</strong> → pesquise por <strong>TreeMap PMB</strong> ou
+    clique aqui: <a href="https://identify.plantnet.org/pt-br/groups/67612542552" target="_blank" rel="noopener"
+    class="text-green-700 underline">abrir grupo TreeMap PMB</a>.
+  </p>
+</div>
+
+      <div class="p-4 border rounded-lg">
+        <div class="font-semibold text-gray-900 mb-1">2) Adicione uma observação</div>
+        <p class="text-gray-700">
+          Toque em <strong>Adicionar observação</strong> e tire <strong>três fotos</strong>, se possível:
+          <strong>folha</strong> (frente/verso), <strong>tronco</strong> (casca) e <strong>árvore inteira</strong>.
+        </p>
+        <div class="mt-2 text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 rounded p-3">
+          <i class="fa-regular fa-lightbulb mr-1"></i>
+          Dica: fotos nítidas e bem enquadradas melhoram a identificação automática.
+        </div>
+      </div>
+
+      <div class="p-4 border rounded-lg">
+        <div class="font-semibold text-gray-900 mb-1">3) Confirme a espécie</div>
+        <p class="text-gray-700">
+          O PlantNet mostrará opções com <strong>porcentagens</strong>. Normalmente a maior é a correta, mas vale
+          confirmar tirando mais uma foto ou repetindo o processo para ter certeza.
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg">
+        <div class="font-semibold text-gray-900 mb-1">4) Marque a localização</div>
+        <p class="text-gray-700">
+          Vá o mais <strong>próximo do tronco</strong> antes de publicar. Isso torna a localização <strong>precisa</strong>
+          no mapa.
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg">
+        <div class="font-semibold text-gray-900 mb-1">5) Publique no grupo TreeMap PMB</div>
+        <p class="text-gray-700">
+          Finalize a observação publicando <strong>dentro do grupo</strong>. Assim que a observação for adicionada ao
+          grupo, ela será sincronizada e <strong>aparecerá no nosso mapa</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dicas extras -->
+  <section class="mt-8 grid md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg shadow p-5">
+      <h3 class="font-semibold mb-2"><i class="fa-solid fa-camera mr-2 text-green-700"></i>Boas fotos</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Evite contra-luz; prefira sombra leve.</li>
+        <li>Chegue perto para focar textura da casca/folha.</li>
+        <li>Inclua a árvore inteira em pelo menos 1 foto.</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-lg shadow p-5">
+      <h3 class="font-semibold mb-2"><i class="fa-solid fa-location-dot mr-2 text-green-700"></i>Localização</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Ative o GPS do celular.</li>
+        <li>Marque o ponto <strong>ao lado do tronco</strong>.</li>
+        <li>Evite marcar de dentro do carro/prédio.</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-lg shadow p-5">
+      <h3 class="font-semibold mb-2"><i class="fa-solid fa-circle-check mr-2 text-green-700"></i>Publicação</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Revise a espécie sugerida (refaça se necessário).</li>
+        <li>Confirme que a observação foi para o grupo certo.</li>
+        <li>Pronto! Aguarde a sincronização com o mapa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section class="mt-8 bg-white rounded-lg shadow p-5">
+    <h2 class="text-xl font-semibold mb-2">Não encontrou o grupo “TreeMap PMB”?</h2>
+    <p class="text-gray-700">
+      Nos avise pelo e-mail <a class="text-green-700 underline" href="mailto:contatotreemapite@gmail.com">contatotreemapite@gmail.com</a>.
+      Podemos enviar o link ou adicionar sua observação manualmente.
+    </p>
+  </section>
+</main>
+
+  <footer class="bg-neutral-900 text-neutral-200">
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-10 md:h-12 lg:h-14 w-auto">
+            <span class="text-base font-semibold text-white">TreeMap-ITE</span>
+          </div>
+          <p class="text-sm text-neutral-400">Mapeamento colaborativo das árvores no entorno da Instituição Toledo de Ensino em Bauru, SP.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Links Úteis</h4>
+          <ul class="space-y-1 text-sm">
+            <li><a href="#mapa" class="hover:text-white">Mapa de Árvores</a></li>
+            <li><a href="sobre.html" class="hover:text-white">Sobre o projeto</a></li>
+            <li><a href="contribuir.html" class="hover:text-white">Como Contribuir</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Contato</h4>
+          <ul class="space-y-1 text-sm">
+            <li class="flex items-center gap-2"><i class="fas fa-envelope"></i><span>contatotreemapite@gmail.com</span></li>
+            <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt"></i><span>Instituição Toledo de Ensino, Bauru-SP</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-neutral-800 mt-6 pt-4 text-center text-xs text-neutral-500">
+        <p>© <span id="year"></span> TreeMap-ITE. Todos os direitos reservados.</p>
+        <p class="mt-1">Dados fornecidos pela comunidade através do PlantNet.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // menu mobile
+    document.getElementById('btn-mobile')?.addEventListener('click', () => {
+      document.getElementById('mobile-menu')?.classList.toggle('hidden');
+    });
+    // ano footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script>
+  // Copiar link do grupo
+  document.getElementById('copy-group-link')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const url = 'https://identify.plantnet.org/pt-br/groups/67612542552';
+    try {
+      await navigator.clipboard.writeText(url);
+      const old = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-regular fa-copy"></i> Link copiado!';
+      btn.classList.add('bg-green-50');
+      setTimeout(() => { btn.innerHTML = old; btn.classList.remove('bg-green-50'); }, 1500);
+    } catch {
+      alert('Não foi possível copiar. Copie manualmente:\n' + url);
+    }
+  });
+</script>
+<!-- Portfolio snapshot: the live EmailJS integration is intentionally excluded. -->
+<script>
+  const modal = document.getElementById('modal-sugestao');
+  const openBtn = document.getElementById('open-sugestao');
+  const closeBtn = document.getElementById('close-sugestao');
+  const form = document.getElementById('form-sugestao');
+  const resposta = document.getElementById('resposta');
+
+  openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+  closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+  modal?.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
+  form?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (resposta) {
+      resposta.textContent = 'Este formulário está desativado na cópia pública do código. Utilize o site oficial para entrar em contato.';
+      resposta.classList.remove('hidden');
+    }
+  });
+</script>
+
+
+</body>
+</html>

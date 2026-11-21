@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sobre • TreeMap-ITE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    .step { counter-increment: step; }
+    .step::before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.5rem; height: 1.5rem; border-radius: 9999px;
+      background: #16a34a; color: #fff; font-size: 0.75rem; font-weight: 700; margin-right: 0.5rem;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <header class="relative z-10 bg-gradient-to-r from-green-700 to-emerald-600 text-white shadow-md">
+    <div class="container mx-auto px-4">
+      <div class="h-20 md:h-24 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-12 md:h-14 lg:h-16 w-auto">
+          <div class="leading-tight">
+            <p class="text-lg md:text-xl font-bold">TreeMap-ITE</p>
+            <p class="text-green-100 text-xs md:text-sm">Mapeamento de Árvores</p>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="index.html#mapa" class="hover:text-green-200 font-medium">Mapa</a>
+          <!--<a href="index.html#especies" class="hover:text-green-200 font-medium">Espécies</a>-->
+          <a href="sobre.html" class="hover:text-green-200 font-medium">Sobre</a>
+          <a href="contribuir.html" class="text-white/90 font-semibold">Contribuir</a>
+        </nav>
+
+        <button id="btn-mobile" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-white/10">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 text-sm">
+          <a href="index.html#mapa" class="px-3 py-2 rounded-lg hover:bg-white/10">Mapa</a>
+          <!--<a href="index.html#especies" class="px-3 py-2 rounded-lg hover:bg-white/10">Espécies</a>-->
+          <a href="sobre.html" class="px-3 py-2 rounded-lg hover:bg-white/10">Sobre</a>
+          <a href="contribuir.html" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20">Contribuir</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-6xl mx-auto p-6">
+
+    <!-- História -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h2 class="text-3xl font-bold text-green-800 mb-4">
+        Sobre o Projeto
+      </h2>
+
+      <p class="mb-4 text-gray-700">
+        O Tree ITE é um projeto voltado ao mapeamento e identificação das
+        árvores do campus da Faculdade ITE, promovendo consciência ambiental
+        e integração entre tecnologia e sustentabilidade.
+      </p>
+
+      <p class="text-gray-700">
+        Utilizando o aplicativo PlantNet para identificação das espécies,
+        as árvores são registradas e exibidas em um mapa interativo,
+        permitindo que alunos e visitantes conheçam melhor a biodiversidade local.
+      </p>
+    </section>
+
+    <!-- Objetivo -->
+    <section class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">
+        Objetivos
+      </h2>
+
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li>Mapear todas as árvores do campus</li>
+        <li>Incentivar educação ambiental</li>
+        <li>Integrar tecnologia e sustentabilidade</li>
+        <li>Disponibilizar dados acessíveis à comunidade</li>
+      </ul>
+    </section>
+
+    <!-- Public portfolio source snapshot: event photos and private gallery integration omitted. -->
+    <section class="bg-white rounded-xl shadow-md p-8">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Galeria do Projeto</h2>
+      <p class="text-gray-700 mb-3">A galeria multimídia não integra esta cópia pública do código.</p>
+      <a href="https://treemap.savi.tec.br/sobre.html" target="_blank" rel="noopener noreferrer" class="text-green-800 underline">Ver a galeria na versão oficial do TreeMap</a>
+    </section>
+
+  </main>
+  <footer class="bg-neutral-900 text-neutral-200">
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-10 md:h-12 lg:h-14 w-auto">
+            <span class="text-base font-semibold text-white">TreeMap-ITE</span>
+          </div>
+          <p class="text-sm text-neutral-400">Mapeamento colaborativo das árvores no entorno da Instituição Toledo de Ensino em Bauru, SP.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Links Úteis</h4>
+          <ul class="space-y-1 text-sm">
+            <li><a href="#mapa" class="hover:text-white">Mapa de Árvores</a></li>
+            <li><a href="sobre.html" class="hover:text-white">Sobre o projeto</a></li>
+            <li><a href="contribuir.html" class="hover:text-white">Como Contribuir</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Contato</h4>
+          <ul class="space-y-1 text-sm">
+            <li class="flex items-center gap-2"><i class="fas fa-envelope"></i><span>contatotreemapite@gmail.com</span></li>
+            <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt"></i><span>Instituição Toledo de Ensino, Bauru-SP</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-neutral-800 mt-6 pt-4 text-center text-xs text-neutral-500">
+        <p>© <span id="year"></span> TreeMap-ITE. Todos os direitos reservados.</p>
+        <p class="mt-1">Dados fornecidos pela comunidade através do PlantNet.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Portfolio snapshot: gallery integration removed. -->
+
+</body>
+</html>

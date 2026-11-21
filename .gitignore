@@ -1,0 +1,23 @@
+# Protected services and local configuration
+.env
+.env.*
+!.env.example
+api/
+admin/
+Admin.html
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Backups and local artifacts
+*.bak
+*.backup
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.log
+node_modules/
+.DS_Store
+Thumbs.db

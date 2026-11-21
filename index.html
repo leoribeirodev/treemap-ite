@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TreeMap-ITE | Mapeamento de Árvores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Altura e aparência do mapa */
+    #map { min-height: 60vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,.1); }
+    @media (min-width: 768px){ #map { min-height: 70vh; } }
+
+    /* Marcador */
+    .tree-icon { background-color:#4CAF50; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; }
+    .tree-icon i { font-size:10px; }
+    .tree-icon.selected { box-shadow:0 0 0 3px rgba(76,175,80,.35); }
+    .leaflet-marker-icon { cursor:pointer; }
+
+    /* Folga para rolagem suave em âncoras */
+    #mapa, #sobre { scroll-margin-top: 16px; }
+
+    /* Evita o mapa passar por cima do header */
+    .leaflet-container { z-index: 0 !important; }
+
+    /* Drawer mobile: vamos reaproveitar o drawer separado */
+    /* (Nada a mudar aqui — o CSS do drawer está em classes utilitárias) */
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+
+  <!-- HEADER -->
+  <header class="relative z-10 bg-gradient-to-r from-green-700 to-emerald-600 text-white shadow-md">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="h-16 flex items-center justify-between py-2">
+        <a href="#" class="flex items-center gap-3">
+          <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-10 md:h-12 lg:h-14 w-auto">
+          <div class="leading-tight">
+            <p class="text-lg font-bold">TreeMap-ITE</p>
+            <p class="text-green-100 text-xs">Mapeamento de Árvores</p>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex space-x-6">
+          <a href="#mapa" class="hover:text-green-200 font-medium">Mapa</a>
+          <a href="sobre.html" class="hover:text-green-200 font-medium">Sobre</a>
+          <a href="contribuir.html" class="hover:text-green-200 font-medium">Contribuir</a>
+        </nav>
+
+        <button id="btn-mobile" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-white/10">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Menu mobile -->
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 text-sm">
+          <a href="#mapa" class="px-3 py-2 rounded-lg hover:bg-white/10">Mapa</a>
+          <a href="sobre.html" class="px-3 py-2 rounded-lg hover:bg-white/10">Sobre</a>
+          <a href="contribuir.html" class="px-3 py-2 rounded-lg hover:bg-white/10">Contribuir</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="mx-auto max-w-6xl px-4 py-8">
+
+    <!-- MAPA + ESTATÍSTICAS -->
+    <section id="mapa" class="mt-6">
+      <div class="bg-white rounded-lg shadow-md p-4">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <h2 class="text-xl font-semibold text-gray-800">Mapa de Árvores</h2>
+
+          <div class="hidden sm:flex space-x-2">
+</div>
+
+
+          <!-- MOBILE: abre o drawer -->
+          <button id="open-stats" class="sm:hidden inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg">
+            <i class="fas fa-chart-pie"></i> Estatísticas
+          </button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-4">
+          <!-- Card lateral (desktop) / bottom-sheet (mobile fica oculto) -->
+          <div id="sidebar-popup" class="hidden lg:w-80 bg-white p-4 border rounded-lg overflow-y-auto"></div>
+
+          <!-- MAPA -->
+          <div id="map" class="flex-1 rounded-lg"></div>
+
+          <!-- ESTATÍSTICAS (APENAS UM BLOCO!) -->
+          <aside id="sidebar-estatisticas" class="hidden lg:block lg:w-80 bg-white p-4 border rounded-lg overflow-y-auto">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Árvores Catalogadas</h2>
+
+            <div class="mb-6">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-medium text-gray-700">Total de Árvores</h3>
+                <span id="total-arvores" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0</span>
+              </div>
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-medium text-gray-700">Espécies Diferentes</h3>
+                <span id="especies-diferentes" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <h3 class="font-medium text-gray-700">Atualizado em</h3>
+                <span id="ultima-atualizacao" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">---</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-medium text-gray-700 mb-3">Espécies Mais Comuns</h3>
+              <ul id="mais-comuns"></ul>
+            </div>
+          </aside>
+        </div>
+
+        <p class="mt-4 text-sm text-gray-600">
+          Dados fornecidos pela comunidade através do
+          <a href="https://identify.plantnet.org/pt-br" target="_blank" class="text-green-600 hover:underline">PlantNet</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- RECENTES -->
+    <section class="mt-12">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Árvores Recentemente Adicionadas</h2>
+      <div id="recent-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="mt-16 bg-white rounded-lg shadow-md p-8">
+      <div class="flex flex-col md:flex-row gap-8">
+        <div class="md:w-1/2">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sobre o TreeMap-ITE</h2>
+          <p class="text-gray-600 mb-4">O TreeMap-ITE é um projeto colaborativo para mapear e catalogar todas as árvores no entorno da Instituição Toledo de Ensino em Bauru, SP.</p>
+          <p class="text-gray-600 mb-4">Utilizamos dados do PlantNet para registrar espécies, localizações e informações sobre a saúde das árvores, criando um inventário vivo da nossa biodiversidade urbana.</p>
+          <p class="text-gray-600 mb-6">Este projeto tem como objetivo promover a conscientização ambiental, auxiliar na preservação do patrimônio arbóreo e servir como ferramenta educacional para estudantes e comunidade.</p>
+        </div>
+        <div class="md:w-1/2 flex items-center">
+          <!-- Portfolio snapshot: large drone footage omitted (media redistribution not reviewed). -->
+          <div class="rounded-lg shadow-md w-full bg-green-50 border border-green-200 p-6 text-center text-gray-700">
+            <p class="font-semibold mb-2">Registro audiovisual disponível no site oficial</p>
+            <p class="text-sm mb-3">Este material não acompanha a cópia pública do código.</p>
+            <a class="text-green-700 underline" href="https://treemap.savi.tec.br/" target="_blank" rel="noopener noreferrer">Visitar TreeMap-ITE</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-neutral-900 text-neutral-200">
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <img src="assets/img/logo3.png" alt="TreeMap-ITE" class="h-10 md:h-12 lg:h-14 w-auto">
+            <span class="text-base font-semibold text-white">TreeMap-ITE</span>
+          </div>
+          <p class="text-sm text-neutral-400">Mapeamento colaborativo das árvores no entorno da Instituição Toledo de Ensino em Bauru, SP.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Links Úteis</h4>
+          <ul class="space-y-1 text-sm">
+            <li><a href="#mapa" class="hover:text-white">Mapa de Árvores</a></li>
+            <li><a href="sobre.html" class="hover:text-white">Sobre o projeto</a></li>
+            <li><a href="contribuir.html" class="hover:text-white">Como Contribuir</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-sm text-white mb-2">Contato</h4>
+          <ul class="space-y-1 text-sm">
+            <li class="flex items-center gap-2"><i class="fas fa-envelope"></i><span>contatotreemapite@gmail.com</span></li>
+            <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt"></i><span>Instituição Toledo de Ensino, Bauru-SP</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-neutral-800 mt-6 pt-4 text-center text-xs text-neutral-500">
+        <p>© <span id="year"></span> TreeMap-ITE. Todos os direitos reservados.</p>
+        <p class="mt-1">Dados fornecidos pela comunidade através do PlantNet.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DRAWER MOBILE -->
+  <div id="drawer-overlay" class="hidden fixed inset-0 bg-black/40 z-40"></div>
+  <aside id="drawer-stats" class="hidden fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] p-4 overflow-y-auto">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold">Árvores Catalogadas</h2>
+      <button id="close-stats" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="font-medium text-gray-700">Total de Árvores</h3>
+        <span id="m-total-arvores" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">0</span>
+      </div>
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="font-medium text-gray-700">Espécies Diferentes</h3>
+        <span id="m-especies-diferentes" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <h3 class="font-medium text-gray-700">Atualizado em</h3>
+        <span id="m-ultima-atualizacao" class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">---</span>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-medium text-gray-700 mb-3">Espécies Mais Comuns</h3>
+      <ul id="m-mais-comuns"></ul>
+    </div>
+  </aside>
+
+  <!-- LEAFLET -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- MAPA BÁSICO -->
+  <script>
+    window.map = L.map('map', {
+  maxZoom: 22,
+  scrollWheelZoom: false
+}).setView([-22.324860, -49.093426], 17); // Localização fixa caso o usuario não aceite compartilhar a localização
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:22, attribution:'&copy; OpenStreetMap contributors' }).addTo(map);
+
+    window.treeIcon = L.divIcon({ className:'tree-icon', html:'<i class="fas fa-tree"></i>', iconSize:[16,16], iconAnchor:[8,8] });
+
+    // Áreas Campus ITE CEUB
+    const campusArea = L.polygon([
+        [-22.324043,-49.094596],
+        [-22.325016,-49.092903],
+        [-22.324324,-49.092388],
+        [-22.324807,-49.091595],
+        [-22.326261,-49.092627],
+        [-22.324783,-49.095108]], 
+        {color:'#4CAF50', fillOpacity:.1}).addTo(map);
+    campusArea.bindPopup("Área da Instituição Toledo de Ensino");
+
+    // Áreas Escola Christino Cabral
+    const campusArea2 = L.polygon([
+        [-22.339588, -49.070038],
+        [-22.340117, -49.070676],
+        [-22.341002, -49.069823],
+        [-22.340657, -49.069370],
+      ], {color: '#4CAF50', fillOpacity: 0.1}).addTo(map);
+      campusArea2.bindPopup("Área da Escola Christino Cabral");
+
+      // Áreas Campus ITE FAIB
+      const campusArea3 = L.polygon([
+        [-22.928430,-48.466919],
+        [-22.926685,-48.467069],
+        [-22.926648,-48.467107],
+        [-22.927031,-48.468965],
+        [-22.928738,-48.468533]], 
+        {color:'#4CAF50', fillOpacity:0.1}).addTo(map);
+    campusArea3.bindPopup("Área da Instituição Toledo de Ensino - FAIB");
+
+    // ===== LOCALIZAÇÃO AUTOMÁTICA TREEMAP-ITE =====
+
+let marcadorUsuario = null;
+
+function localizarUsuario() {
+
+  map.locate({
+    setView: false,
+    enableHighAccuracy: true,
+    timeout: 15000,
+    maximumAge: 60000
+  });
+
+}
+
+// Localização encontrada
+map.on('locationfound', function(e) {
+
+  const posicao = e.latlng;
+
+  map.setView(posicao, 17, {
+    animate: true
+  });
+
+  // Remove o marcador anterior
+  if (marcadorUsuario) {
+    map.removeLayer(marcadorUsuario);
+  }
+
+  // Marcador pequeno personalizado do TreeMap-ITE
+const iconeUsuario = L.divIcon({
+  className: 'marcador-usuario',
+  html: `
+    <div style="
+      width: 14px;
+      height: 14px;
+      background-color: #2563eb;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      box-sizing: border-box;
+    "></div>
+  `,
+  iconSize: [14, 14],
+  iconAnchor: [7, 7]
+});
+
+marcadorUsuario = L.marker(posicao, {
+  icon: iconeUsuario
+})
+  .addTo(map)
+  .bindPopup("📍 Você está aqui!");
+
+});
+
+// Caso não consiga localizar
+map.on('locationerror', function(e) {
+  // Mantém o mapa na localização padrão
+});
+
+// Botões de zoom
+document.getElementById('zoom-in')?.addEventListener(
+  'click', () => map.zoomIn()
+);
+
+document.getElementById('zoom-out')?.addEventListener(
+  'click', () => map.zoomOut()
+);
+
+// Botão de localização manual, caso exista
+document.getElementById('locate-me')?.addEventListener(
+  'click', localizarUsuario
+);
+
+// Localiza automaticamente ao abrir o site
+localizarUsuario();
+  </script>
+
+  <!-- UX: drawer + menu + rolagem suave + ano -->
+  <script>
+    (function () {
+      const open = document.getElementById('open-stats');
+      const close = document.getElementById('close-stats');
+      const overlay = document.getElementById('drawer-overlay');
+      const drawer = document.getElementById('drawer-stats');
+
+      function showDrawer(){
+  overlay.classList.remove('hidden');
+  drawer.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  try { map.invalidateSize(); } catch {}
+
+  // >>> garante que o conteúdo do drawer apareça na hora, inclusive no celular real
+  if (window.__lastStats && window.renderStatsMobile) {
+    window.renderStatsMobile(window.__lastStats);
+  }
+}
+
+      function hideDrawer(){ overlay.classList.add('hidden'); drawer.classList.add('hidden'); document.body.style.overflow=''; try{map.invalidateSize()}catch{} }
+
+      open?.addEventListener('click', showDrawer);
+      close?.addEventListener('click', hideDrawer);
+      overlay?.addEventListener('click', hideDrawer);
+      window.addEventListener('resize', () => { if (window.matchMedia('(min-width:1024px)').matches) hideDrawer(); try{map.invalidateSize()}catch{} });
+
+      // menu mobile
+      document.getElementById('btn-mobile')?.addEventListener('click', ()=> document.getElementById('mobile-menu')?.classList.toggle('hidden'));
+
+      // rolagem suave
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', e=>{
+          const id=a.getAttribute('href').slice(1), el=document.getElementById(id);
+          if(!el) return;
+          e.preventDefault();
+          const top=el.getBoundingClientRect().top+window.scrollY;
+          window.scrollTo({top, behavior:'smooth'}); history.pushState({},'', '#'+id);
+        });
+      });
+
+      // ano
+      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    })();
+  </script>
+
+  <!--Base cientifica-->
+  <script src="dados-ambientais.js"></script>
+
+  <!-- Validação e calculos ambientais -->
+  <script src="calculos-ambientais.js?v=2"></script>
+
+  <!-- API principal -->
+  <script src="api.js?v=medidas2"></script>
+</body>
+</html>
