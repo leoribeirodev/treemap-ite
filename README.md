@@ -73,11 +73,19 @@ The static layout and base map can be previewed, but **observation data will not
 - Some visual assets are included solely for project identification; their publication/redistribution rights should be confirmed before making the repository public.
 - A public source snapshot should not be used as a replacement for a security review of the live service.
 
-## Credits and attribution
+## Credits and contributions
 
-TreeMap-ITE is a **collaborative educational project**. The live service is associated with the Instituição Toledo de Ensino (ITE) and community tree-observation work. Third-party services and libraries (including Leaflet, OpenStreetMap and Pl@ntNet) retain their respective ownership and terms.
+TreeMap-ITE is a collaborative educational project associated with **Instituição Toledo de Ensino (ITE)**. Its development combines project coordination, tree-observation work, and software engineering.
 
-This repository is included in **Leonardo Ribeiro's development portfolio** to document work with web interfaces, interactive maps and API-driven data presentation. It does not claim sole authorship of the institutional project.
+- **Leonardo Ribeiro — Lead Developer and Code Maintainer:** responsible for most of the application's implementation and its ongoing code maintenance.
+- **Prof. Rodrigo Guarnetti — Project Coordinator:** project guidance and oversight.
+- **Bruno Savi — Project Coordinator:** coordination and planning.
+- **Tree observation contributors:** Ana Clara Piva, Ricardo Henrique, Murilo Cardoso, Maria Julia Melo, and Julio Cesar Bosco.
+
+The project is collaborative in its planning and field observations, while Leonardo is responsible for the application's main software implementation. This repository is a curated portfolio snapshot, **not** the entire production system.
+
+See [Contributions and Project Credits](docs/CONTRIBUTIONS.md) for the detailed breakdown of responsibilities.
+
 
 ## Licensing
 
