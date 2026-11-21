@@ -28,6 +28,22 @@ TreeMap-ITE helps visualize tree observations associated with educational and co
 - Public information pages explaining the project and how to contribute
 - Frontend escaping of observation text and HTTP(S)-only validation for external image URLs in this curated snapshot
 
+## Screenshots
+
+### Interactive Map & Environmental Overview
+
+Explore geolocated tree observations through an
+interactive map featuring catalog statistics,
+species information, and environmental data.
+
+<img
+  src="docs/screenshots/map-overview.png"
+  alt="TreeMap interactive map and observation statistics"
+  width="900"
+/>
+
+*Map data © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright). Observations are provided through Pl@ntNet.*
+
 ## Tech stack
 
 `HTML5` · `CSS3` · `JavaScript` · `Tailwind CSS` · `Leaflet` · `Font Awesome` · `JSON` · `REST-style API integration`
